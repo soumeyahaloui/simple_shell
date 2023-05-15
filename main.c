@@ -1,44 +1,86 @@
 #include "shell.h"
 
 /**
- * main - entry point
- * @ac: arg count
- * @av: arg vector
- *
- * Return: 0 on success, 1 on error
+ * print_prompt - Prints the shell prompt
  */
-int main(int ac, char **av)
+void print_prompt(void)
 {
-	info_t info[] = { INFO_INIT };
-	int fd = 2;
+	if (isatty(STDIN_FILENO))
+		_puts("$ ");
+}
 
-	asm ("mov %1, %0\n\t"
-			"add $3, %0"
-			: "=r" (fd)
-			: "r" (fd));
+/**
+ * handle_input - Handles the user input
+ * @info: Pointer to the info_t structure
+ * @input: User input string
+ */
+void handle_input(info_t *info, char *input)
+{
+	info->line_count++;
+	remove_comments(input);
 
-	if (ac == 2)
+	/* Handle empty lines */
+	if (*input == '\n')
+		return;
+
+	set_info(info, input);
+	if (replace_alias(info) == -1)
 	{
-		fd = open(av[1], O_RDONLY);
-		if (fd == -1)
-		{
-			if (errno == EACCES)
-				exit(126);
-			if (errno == ENOENT)
-			{
-				_eputs(av[0]);
-				_eputs(": 0: Can't open ");
-				_eputs(av[1]);
-				_eputchar('\n');
-				_eputchar(BUF_FLUSH);
-				exit(127);
-			}
-			return (EXIT_FAILURE);
-		}
-		info->readfd = fd;
+		print_error(&info, "alias: not found");
+		return;
 	}
-	populate_env_list(info);
-	read_history(info);
-	hsh(info, av);
-	return (EXIT_SUCCESS);
+
+	if (replace_vars(info) == -1)
+	{
+		print_error(&info, "Illegal variable name");
+		return;
+	}
+
+	if (find_builtin(&info) == 0)
+		fork_cmd(&info);
+}
+
+/**
+ * main - Entry point for the shell program
+ * @argc: The number of command-line arguments
+ * @argv: An array of command-line argument strings
+ * Return: The exit status of the shell program
+ */
+int main(int argc, char **argv)
+{
+	info_t info = INFO_INIT;
+	char *input = NULL;
+	size_t input_size = 0;
+	int exit_status = 0;
+
+	(void)argc; /* Unused parameter */
+
+	/* Initialize signal handler for SIGINT */
+	signal(SIGINT, sigintHandler);
+
+	/* Read and process input */
+	while (1)
+	{
+		print_prompt();
+
+		if (_getline(&info, &input, &input_size) == -1)
+			break;
+
+		handle_input(&info, input);
+
+		if (info.status == 2)
+			continue;
+		else if (info.status == -1)
+			exit_status = 2;
+		else if (info.status == 3)
+			exit_status = 127;
+		else
+			exit_status = info.status;
+
+		clear_info(&info);
+	}
+
+	free(input);
+	clear_info(&info);
+	return (exit_status);
 }
