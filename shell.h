@@ -12,5 +12,6 @@
  * Return: Always 0 (Success)
  */
 int main(void);
+extern char **environ;
 
 #endif /* SHELL_H */
