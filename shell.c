@@ -26,14 +26,15 @@ int main(void)
 		if (!strcmp(line, "env\n"))
 		{
 			int i;
-			for (i = 0; environ[i]; i++)
 
+			for (i = 0; environ[i]; i++)
 				printf("%s\n", environ[i]);
 		}
 
 		args = malloc(100 * sizeof(char *));
 		int argc = 0;
 		char *token = strtok(line, " ");
+
 		while (token)
 
 		{
