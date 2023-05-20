@@ -11,6 +11,8 @@ int main(void)
 	char **args;
 	int n;
 	size_t len = 0;
+	int argc = 0; /* Move the declaration here */
+	char *token;  /* Move the declaration here */
 
 	while (1)
 	{
@@ -32,11 +34,9 @@ int main(void)
 		}
 
 		args = malloc(100 * sizeof(char *));
-		int argc = 0;
-		char *token = strtok(line, " ");
+		token = strtok(line, " ");
 
 		while (token)
-
 		{
 			args[argc++] = token;
 			token = strtok(NULL, " ");
@@ -46,5 +46,7 @@ int main(void)
 		if (execvp(args[0], args) == -1)
 			printf("%s: command not found\n", args[0]);
 		free(args);
-		}
+	}
+
+	return 0;
 }

@@ -1,77 +1,91 @@
-#include <shell.h>
+#include "shell.h"
 
 /**
- * main - A simple UNIX command line interpreter
+ * _eputs - prints a string to stderr
+ * @str: the string to be printed
  *
- * Return: Always 0 (Success)
+ * Return: Nothing
  */
-int main(void)
+void _eputs(char *str)
 {
-	char *line = NULL;
-	char **args = NULL;
-	int n;
-	size_t len = 0;
+	int i = 0;
 
-	while (1)
+	if (!str)
+		return;
+
+	while (str[i] != '\0')
 	{
-		printf("#cisfun$ ");
-		n = getline(&line, &len, stdin);
-		line[n - 1] = '\0';
-		args = malloc(100 * sizeof(char *));
-		int argc = 0;
-		char *token = strtok(line, " ");
-
-		while (token)
-		{
-			args[argc++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[argc] = NULL;
-		char *path = getenv("PATH");
-		char *command_path = NULL;
-
-		token = strtok(path, ":");
-		while (token)
-		{
-			command_path = malloc(strlen(token) + strlen(args[0]) + 2);
-			sprintf(command_path, "%s/%s", token, args[0]);
-			if (access(command_path, X_OK) == 0)
-			{
-				break;
-			}
-			free(command_path);
-			command_path = NULL;
-			token = strtok(NULL, ":");
-		}
-		if (command_path == NULL)
-		{
-			printf("%s: command not found\n", args[0]);
-		}
-		else
-		{
-			pid_t child_pid = fork();
-
-			if (child_pid == -1)
-			{
-				perror("fork");
-				exit(EXIT_FAILURE);
-			}
-			else if (child_pid == 0)
-			{
-				execve(command_path, args, NULL);
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				int status;
-
-				waitpid(child_pid, &status, 0);
-			}
-			free(command_path);
-		}
-		free(args);
+		_eputchar(str[i]);
+		i++;
 	}
-	free(line);
-	return 0;
+}
+
+/**
+ * _eputchar - writes a character to stderr
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ *         On error, -1 is returned, and errno is set appropriately.
+ */
+int _eputchar(char c)
+{
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(2, buf, i);
+		i = 0;
+	}
+
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+
+	return (1);
+}
+
+/**
+ * _putfd - writes a character to the given file descriptor
+ * @c: The character to print
+ * @fd: The file descriptor to write to
+ *
+ * Return: On success 1.
+ *         On error, -1 is returned, and errno is set appropriately.
+ */
+int _putfd(char c, int fd)
+{
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(fd, buf, i);
+		i = 0;
+	}
+
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+
+	return (1);
+}
+/**
+ * _putsfd - prints a string to the given file descriptor
+ * @str: the string to be printed
+ * @fd: the file descriptor to write to
+ *
+ * Return: the number of characters written
+ */
+int _putsfd(char *str, int fd)
+{
+	int i = 0;
+
+	if (!str)
+		return (0);
+
+	while (*str)
+	{
+		i += _putfd(*str++, fd);
+	}
+
+	return (i);
 }
