@@ -8,11 +8,6 @@
 #include <sys/wait.h>
 #include <limits.h>
 
-/**
- * main - A simple UNIX command line interpreter
- *
- * Return: Always 0 (Success)
- */
 int main(void);
 extern char **environ;
 
@@ -31,12 +26,8 @@ typedef struct info_s
 	char **argv;
 } info_t;
 
-/* Function prototypes */
 int _erratoi(char *s);
 void print_error(info_t *info, char *estr);
 int print_d(int input, int fd);
-
-#define CONVERT_UNSIGNED 1
-#define CONVERT_LOWERCASE 2
 
 #endif /* SHELL_H */
