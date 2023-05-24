@@ -1,5 +1,8 @@
 #include "shell.h"
 
+#define CONVERT_UNSIGNED 1
+#define CONVERT_LOWERCASE 2
+
 /**
  * convert_number - converts a number to a string in the specified base
  * @num: the number to convert
@@ -22,7 +25,7 @@ char *convert_number(long int num, int base, int flags)
 		sign = '-';
 	}
 
-	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
+	array = (flags & CONVERT_LOWERCASE) ? "0123456789abcdef" : "0123456789ABCDEF";
 	ptr = &buffer[49];
 	*ptr = '\0';
 

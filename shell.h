@@ -7,12 +7,14 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <errno.h>
+#include <fcntl.h>
 
-int main(void);
 extern char **environ;
 
 #define WRITE_BUF_SIZE 1024
 #define BUF_FLUSH '\0'
+#define INFO_INIT {NULL, 0, NULL}
 
 void _eputs(char *str);
 int _eputchar(char c);
