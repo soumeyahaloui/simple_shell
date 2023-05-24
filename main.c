@@ -9,10 +9,6 @@
  */
 int main(int ac, char **av)
 {
-	void populate_env_list(info_t *info);
-	void read_history(info_t *info);
-	void hsh(info_t *info, char **av);
-
 	info_t info[] = {INFO_INIT};
 	int fd = 2;
 
@@ -39,9 +35,25 @@ int main(int ac, char **av)
 		info[0].line_count = fd;
 	}
 
-	populate_env_list(info); /** Pass the address of info */
-	read_history(info); /**  Pass the address of info */
-	hsh(info, av);
+#include "shell.h"
+
+	int populate_env_list(info_t *info)
+	{
+		/** Function implementation */
+		return 0;
+	}
+
+	int read_history(info_t *info)
+	{
+		/** Function implementation */
+		return 0;
+	}
+
+	int hsh(info_t *info, char **av)
+	{
+		/**  Function implementation */
+		return 0;
+	}
 
 	return (EXIT_SUCCESS);
 }

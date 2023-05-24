@@ -31,5 +31,8 @@ typedef struct info_s
 int _erratoi(char *s);
 void print_error(info_t *info, char *estr);
 int print_d(int input, int fd);
+int populate_env_list(info_t *);
+int read_history(info_t *info);
+int hsh(info_t *, char **);
 
 #endif /* SHELL_H */
