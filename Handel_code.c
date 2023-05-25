@@ -4,7 +4,10 @@
 #include <string.h>
 
 /**
- * main - A simple UNIX command line interpreter
+ * main - Entry point for the program
+ *
+ * This function reads input from the user, tokenizes it into arguments,
+ * and executes commands using execvp.
  *
  * Return: Always 0 (Success)
  */
@@ -15,6 +18,10 @@ int main(void)
 	int n;
 	size_t len = 0;
 	int argc = 0;
+<<<<<<< HEAD
+=======
+	char *token;
+>>>>>>> 40aad4a7ebdee307a78b4e3e0429969ed1911139
 
 	while (1)
 	{
@@ -23,7 +30,7 @@ int main(void)
 		line[n - 1] = '\0';
 		args = malloc(100 * sizeof(char *));
 		argc = 0;
-		char *token = strtok(line, " ");
+		token = strtok(line, " ");
 
 		while (token)
 		{
