@@ -18,7 +18,10 @@ int main(void)
 	int n;
 	size_t len = 0;
 	int argc = 0;
+<<<<<<< HEAD
+=======
 	char *token;
+>>>>>>> 40aad4a7ebdee307a78b4e3e0429969ed1911139
 
 	while (1)
 	{
@@ -32,7 +35,9 @@ int main(void)
 		while (token)
 		{
 			args[argc++] = token;
-			token = strtok(NULL, " ");
+			char *token;
+			token = strtok(line, " ");
+
 		}
 		args[argc] = NULL;
 		if (execvp(args[0], args) == -1)
