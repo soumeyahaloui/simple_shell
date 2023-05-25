@@ -2,6 +2,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+
+/**
+ * parseInput - Tokenize the input line into arguments
+ * @line: Input line to be tokenized
+ * @args: Array to store the arguments
+ * @argSize: Maximum size of the argument array
+ *
+ * Return: Number of arguments parsed
+ */
+int parseInput(char *line, char **args, int argSize)
+{
+	char *token;
+	int argc = 0;
+
+	token = strtok(line, " ");
+	while (token != NULL && argc < argSize - 1)
+	{
+		args[argc] = token;
+		argc++;
+		token = strtok(NULL, " ");
+	}
+	args[argc] = NULL;
+
+	return (argc);
+}
 /**
  * main - Entry point for the program
  *
@@ -13,32 +38,35 @@
 int main(void)
 {
 	char *line = NULL;
-	char **args;
-	int n;
+	char *args[100];
 	size_t len = 0;
-	int argc = 0;
-	char *token;
+	ssize_t nread;
+	int argc;
 
 	while (1)
 	{
 		printf("#cisfun$ ");
-		n = getline(&line, &len, stdin);
-		line[n - 1] = '\0';
-		args = malloc(100 * sizeof(char *));
-		argc = 0;
-		token = strtok(line, " ");
 
-		while (token)
+		nread = getline(&line, &len, stdin);
+		if (nread == -1)
 		{
-			args[argc++] = token;
-			token = strtok(NULL, " ");
+			perror("getline");
+			break;
 		}
-		args[argc] = NULL;
 
-		if (execvp(args[0], args) == -1)
-			printf("%s: No such file or directory\n", args[0]);
-		free(args);
+		line[strcspn(line, "\n")] = '\0';
+
+		argc = parseInput(line, args, 100);
+
+		if (argc > 0)
+		{
+			if (execvp(args[0], args) == -1)
+			{
+				perror(args[0]);
+			}
+		}
 	}
+
 	free(line);
 	return (0);
 }
