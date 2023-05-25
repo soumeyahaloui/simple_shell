@@ -17,6 +17,7 @@ int main(void)
 	int n;
 	size_t len = 0;
 	int argc = 0;
+	char *token;
 
 	while (1)
 	{
@@ -25,9 +26,7 @@ int main(void)
 		line[n - 1] = '\0';
 		args = malloc(100 * sizeof(char *));
 		argc = 0;
-		char *token;
 		token = strtok(line, " ");
-
 
 		while (token)
 		{
