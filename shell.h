@@ -14,6 +14,6 @@
  */
 int main(void);
 extern char **environ;
-
+char *token;
 
 #endif /* SHELL_H */
