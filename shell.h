@@ -12,6 +12,10 @@
 
 extern char **environ;
 char *token;
+<<<<<<< HEAD
+=======
+
+>>>>>>> e72ff7a148754a770d9511f3e90c5e841419156a
 #define WRITE_BUF_SIZE 1024
 #define BUF_FLUSH '\0'
 #define INFO_INIT {NULL, 0, NULL}
