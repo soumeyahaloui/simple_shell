@@ -1,6 +1,50 @@
 #include "shell.h"
 
 /**
+ * populate_env_list - Populates the environment list
+ * @info: Information struct (unused)
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int populate_env_list(info_t *info)
+{
+	(void)info; /* Marking the parameter as unused */
+
+	/** Function implementation */
+	return (0);
+}
+
+/**
+ * read_history - Reads the command history
+ * @info: Information struct (unused)
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int read_history(info_t *info)
+{
+	(void)info; /* Marking the parameter as unused */
+
+	/** Function implementation */
+	return (0);
+}
+
+/**
+ * hsh - Shell main function
+ * @info: Information struct (unused)
+ * @av: Argument vector (unused)
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int hsh(info_t *info, char **av)
+{
+	(void)info; /* Marking the parameter as unused */
+	(void)av;   /* Marking the parameter as unused */
+
+	/** Function implementation */
+	return (0);
+}
+
+/**
  * main - Entry point
  * @ac: Arg count
  * @av: Arg vector
@@ -9,7 +53,6 @@
  */
 int main(int ac, char **av)
 {
-	info_t info[] = {INFO_INIT};
 	int fd = 2;
 
 	if (ac == 2)
@@ -32,27 +75,6 @@ int main(int ac, char **av)
 			}
 			return (EXIT_FAILURE);
 		}
-		info[0].line_count = fd;
-	}
-
-#include "shell.h"
-
-	int populate_env_list(info_t *info)
-	{
-		/** Function implementation */
-		return 0;
-	}
-
-	int read_history(info_t *info)
-	{
-		/** Function implementation */
-		return 0;
-	}
-
-	int hsh(info_t *info, char **av)
-	{
-		/**  Function implementation */
-		return 0;
 	}
 
 	return (EXIT_SUCCESS);
