@@ -9,6 +9,6 @@
  */
 int main(void)
 {
-	printf("Betty is proud!\n");
+	printf("Bety is proud!\n");
 	return (0);
 }

@@ -20,6 +20,7 @@ void _eputs(char *str);
 int _eputchar(char c);
 int _putfd(char c, int fd);
 int _putsfd(char *str, int fd);
+char *token;
 
 typedef struct info_s
 {
