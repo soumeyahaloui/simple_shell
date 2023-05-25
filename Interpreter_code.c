@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 /**
- * main - Entry point for the simple UNIX command line interpreter
+ * main - Entry poirt for the simple UNIX command line interpreter
  *
  * Reads input from the user,interprets the command,&executes it using execve.
  *
