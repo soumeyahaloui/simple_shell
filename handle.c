@@ -68,6 +68,7 @@ int _putfd(char c, int fd)
 
 	return (1);
 }
+
 /**
  * _putsfd - prints a string to the given file descriptor
  * @str: the string to be printed
