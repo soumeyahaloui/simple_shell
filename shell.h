@@ -6,11 +6,18 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
+<<<<<<< HEAD
+#include <fcntl.h>
+#include <errno.h>
+#include <limits.h>
+=======
 #include <sys/stat.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
+>>>>>>> dee24635c329a4bd1c9b861506fc2f8b5420c556
 
 /* for read/write buffers */
 #define READ_BUF_SIZE 1024
@@ -233,5 +240,7 @@ int replace_vars(info_t *);
 int replace_string(char **, char *);
 void display_prompt(void);
 void parse_command(char *command);
+
+#define MAX_ARGS 1024
 
 #endif
