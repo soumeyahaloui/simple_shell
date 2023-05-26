@@ -1,54 +1,92 @@
 #include "shell.h"
 
 /**
- * hsh - Execute a command in a child process
- * @args: Array of strings representing the command and its arguments
- *
- * Return: Always returns 1
+ * _myenv - prints the current environment
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ * Return: Always 0
  */
-int hsh(char **args)
+int _myenv(info_t *info)
 {
-	pid_t pid, wpid;
-	int status;
+	print_list_str(info->env);
+	return (0);
+}
 
-	pid = fork();
-	if (pid == 0)
-	{
-		/* Child process */
-		if (execve(args[0], args, NULL) == -1)
-		{
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (pid < 0)
-	{
-		/* Fork error */
-		perror("fork");
-	}
-	else
-	{
-		/* Parent process */
-		do
+/**
+ * _getenv - gets the value of an environ variable
+ * @info: Structure containing potential arguments. Used to maintain
+ * @name: env var name
+ *
+ * Return: the value
+ */
+char *_getenv(info_t *info, const char *name)
+{
+	list_t *node = info->env;
+	char *p;
 
-		{
-			wpid = waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	while (node)
+	{
+		p = starts_with(node->str, name);
+		if (p && *p)
+			return (p);
+		node = node->next;
 	}
+	return (NULL);
+}
 
+/**
+ * _mysetenv - Initialize a new environment variable,
+ *             or modify an existing one
+ * @info: Structure containing potential arguments. Used to maintain
+ *        constant function prototype.
+ *  Return: Always 0
+ */
+int _mysetenv(info_t *info)
+{
+	if (info->argc != 3)
+	{
+		_eputs("Incorrect number of arguements\n");
+		return (1);
+	}
+	if (_setenv(info, info->argv[1], info->argv[2]))
+		return (0);
 	return (1);
 }
 
 /**
- * main - Entry point of the program
- *
- * Return: Always returns 0
+ * _myunsetenv - Remove an environment variable
+ * @info: Structure containing potential arguments. Used to maintain
+ *        constant function prototype.
+ * Return: Always 0
  */
-int main(void)
+int _myunsetenv(info_t *info)
 {
-	char *args[] = {"/bin/ls", "-l", NULL}; /* Example command: ls -l */
+	int i;
 
-	hsh(args);
+	if (info->argc == 1)
+	{
+		_eputs("Too few arguements.\n");
+		return (1);
+	}
+	for (i = 1; i <= info->argc; i++)
+		_unsetenv(info, info->argv[i]);
 
+	return (0);
+}
+
+/**
+ * populate_env_list - populates env linked list
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ * Return: Always 0
+ */
+int populate_env_list(info_t *info)
+{
+	list_t *node = NULL;
+	size_t i;
+
+	for (i = 0; environ[i]; i++)
+		add_node_end(&node, environ[i], 0);
+	info->env = node;
 	return (0);
 }
