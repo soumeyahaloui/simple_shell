@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+<<<<<<< HEAD
 #include <sys/stat.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -231,5 +232,10 @@ void check_chain(info_t *, char *, size_t *, size_t, size_t);
 int replace_alias(info_t *);
 int replace_vars(info_t *);
 int replace_string(char **, char *);
+=======
+
+void display_prompt(void);
+void parse_command(char *command);
+>>>>>>> 01246a6bd90e189ee494dc9b511c64531dd50469
 
 #endif
