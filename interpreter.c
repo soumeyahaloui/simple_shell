@@ -10,12 +10,17 @@ void display_prompt(void)
 
 /**
  * execute_command - Execute the given command
- * @command: The command to execute
+ * @command: The command to executed
  */
 void execute_command(char *command)
 {
 	pid_t pid;
 	int status;
+	char *args[MAX_ARGS] = {NULL};
+	char *token = strtok(command, " ");
+
+	for (int i = 0; token && i < MAX_ARGS; i++, token = strtok(NULL, " "))
+		args[i] = token;
 
 	pid = fork();
 	if (pid == -1)
@@ -23,22 +28,14 @@ void execute_command(char *command)
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
-	else if (pid == 0) /* Child process */
+	if (pid == 0)
 	{
-		char *args[] = {command, NULL};
-
-		execvp(command, args);
+		execvp(args[0], args);
 		perror("execvp");
 		exit(EXIT_FAILURE);
 	}
-	else /* Parent process */
-	{
-		do
 
-		{
-			waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
+	while (waitpid(pid, &status, WUNTRACED) == -1);
 }
 
 /**
