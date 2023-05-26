@@ -1,58 +1,15 @@
 #include "shell.h"
 
 /**
- * populate_env_list - Populates the environment list
- * @info: Information struct (unused)
- *
- * Return: 0 on success, -1 on failure
- */
-int populate_env_list(info_t *info)
-{
-	(void)info; /* Marking the parameter as unused */
-
-	/** Function implementation */
-	return (0);
-}
-
-/**
- * read_history - Reads the command history
- * @info: Information struct (unused)
- *
- * Return: 0 on success, -1 on failure
- */
-int read_history(info_t *info)
-{
-	(void)info; /* Marking the parameter as unused */
-
-	/** Function implementation */
-	return (0);
-}
-
-/**
- * hsh - Shell main function
- * @info: Information struct (unused)
- * @av: Argument vector (unused)
- *
- * Return: 0 on success, -1 on failure
- */
-int hsh(info_t *info, char **av)
-{
-	(void)info; /* Marking the parameter as unused */
-	(void)av;   /* Marking the parameter as unused */
-
-	/** Function implementation */
-	return (0);
-}
-
-/**
- * main - Entry point
- * @ac: Arg count
- * @av: Arg vector
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
  * Return: 0 on success, 1 on error
  */
 int main(int ac, char **av)
 {
+	info_t info[] = {INFO_INIT};
 	int fd = 2;
 
 	if (ac == 2)
@@ -61,9 +18,7 @@ int main(int ac, char **av)
 		if (fd == -1)
 		{
 			if (errno == EACCES)
-			{
 				exit(126);
-			}
 			if (errno == ENOENT)
 			{
 				_eputs(av[0]);
@@ -75,7 +30,11 @@ int main(int ac, char **av)
 			}
 			return (EXIT_FAILURE);
 		}
+		info->readfd = fd;
 	}
 
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
 	return (EXIT_SUCCESS);
 }
