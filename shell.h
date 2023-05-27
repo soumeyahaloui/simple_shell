@@ -6,11 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/wait.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <limits.h>
 #include <sys/stat.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -39,7 +35,6 @@
 #define HIST_MAX	4096
 
 extern char **environ;
-
 
 /**
  * struct liststr - singly linked list
@@ -113,7 +108,6 @@ typedef struct builtin
 	char *type;
 	int (*func)(info_t *);
 } builtin_table;
-
 
 /* toem_shloop.c */
 int hsh(info_t *, char **);
@@ -235,9 +229,5 @@ void check_chain(info_t *, char *, size_t *, size_t, size_t);
 int replace_alias(info_t *);
 int replace_vars(info_t *);
 int replace_string(char **, char *);
-void display_prompt(void);
-void parse_command(char *command);
-
-#define MAX_ARGS 1024
 
 #endif
